@@ -42,7 +42,7 @@ void ConsoleView::showEnemyField(const EnemyField* field) const{
     auto cellsStatus = field->getCellsStatus();
     size_t i = 1;
 
-    std::cout<<"   A B C D E F G H I J "<<std::endl;
+    std::cout << "   A B C D E F G H I J " << std::endl;
 
     for (size_t y = 0; y < field_dimention; ++y){
         
@@ -83,8 +83,10 @@ Coordinates ConsoleView::getCoordinatesForShip(size_t size){
         size_t numberIndex = 1;
         size_t orientationIndex = 3;
         std::cout << "Place a ship with size "<< size << std::endl;
-        getline(std::cin, input_string);
-        
+        do{
+            getline(std::cin, input_string);
+        } while("" == input_string);
+
         if ((input_string[numberIndex] >= '1') && (input_string[numberIndex] <= '9')){
             if (('1' == input_string[numberIndex]) && ('0' == input_string[numberIndex + 1])){
                 if (input_string.length() != 5){
@@ -140,7 +142,10 @@ ShotCoordinates ConsoleView::getCoordinatesToShoot(){
     bool isEnded = false;
     
     while (!isEnded){
-        getline(std::cin, input_string);
+        do{
+            getline(std::cin, input_string);
+        } while("" == input_string);
+        
         if ((input_string[numberIndex] >= '1') && (input_string[numberIndex] <= '9')){
             if (('1' == input_string[numberIndex]) && ('0' == input_string[numberIndex + 1])){
                 if (input_string.length() != 3){

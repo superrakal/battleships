@@ -28,7 +28,9 @@ class AssistedGamer : public Gamer{
         std::vector<std::vector<size_t>> chance;
 
         std::string bestShootStr(ShotCoordinates coordinates);
-        
+        Coordinates getShipCoordinatesFromConsole(size_t size);
+        Coordinates getShipCoordinatesOptimal(size_t size);
+
         size_t previous_side = 0;
 	    
 	public:

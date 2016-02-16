@@ -261,8 +261,8 @@ ShotCoordinates OptimalGamer::denyShip(){
         size_t maximumDieShipChance = 0;
         ShotCoordinates maximumDieShipChanceCoordinates;
 
-        for (int x = 0; x < field_dimention; ++x){
-            for (int y = 0; y < field_dimention; ++y){
+        for (int x = left; x <= right; ++x){
+            for (int y = top; y <= bottom; ++y){
                 if (chance[x][y] > maximumDieShipChance){
                     maximumDieShipChance = chance[x][y];
                     maximumDieShipChanceCoordinates = ShotCoordinates(x, y);

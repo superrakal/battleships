@@ -43,12 +43,12 @@ void AssistedGamer::init(Field * f1, EnemyField * f2, ...){
     }
 }
 
-size_t AssistedGamer::calculateDieChance(ShotCoordinates cell){
+size_t AssistedGamer::calculateDieChance(ShotCoordinates coordinate){
     int field_dimention = (int)enemy_field->getDimention();
     auto& enemyCells = enemy_field->getCellsStatus();
 
     int maxSize = 0;
-    for (size_t i = 1; i <= alivingShips.size() - 1; ++i){ //максимальный размер корабля на поле
+    for (size_t i = 1; i <= alivingShips.size() - 1; ++i){ 
         if (alivingShips[i] > 0){
             maxSize = (int)i;
         }
@@ -59,10 +59,10 @@ size_t AssistedGamer::calculateDieChance(ShotCoordinates cell){
     int top;
     int bottom;
     
-    (int)cell.x - maxSize + 1 > 0 ? left = (int)cell.x - maxSize + 1 : left = 0;
-    ((int)cell.x + maxSize - 1) < (field_dimention - 1) ? right = (int)cell.x + maxSize - 1 : right = field_dimention - 1;
-    (int)cell.y - maxSize + 1 > 0 ? top = (int)cell.y - maxSize + 1 : top = 0;
-    ((int)cell.y + maxSize - 1) < (field_dimention - 1) ? bottom = (int)cell.y + maxSize - 1 : bottom = field_dimention - 1;
+    (int)coordinate.x - maxSize + 1 > 0 ? left = (int)coordinate.x - maxSize + 1 : left = 0;
+    ((int)coordinate.x + maxSize - 1) < (field_dimention - 1) ? right = (int)coordinate.x + maxSize - 1 : right = field_dimention - 1;
+    (int)coordinate.y - maxSize + 1 > 0 ? top = (int)coordinate.y - maxSize + 1 : top = 0;
+    ((int)coordinate.y + maxSize - 1) < (field_dimention - 1) ? bottom = (int)coordinate.y + maxSize - 1 : bottom = field_dimention - 1;
     
     for (int size = 2; size <= maxSize; ++size){
         if (0 == alivingShips[size]){
@@ -73,16 +73,16 @@ size_t AssistedGamer::calculateDieChance(ShotCoordinates cell){
             bool eq = false;
             bool miss = false;
             for (int z = i; z <= i + size - 1; ++z){
-                if (missed_status == enemyCells[z][cell.y]){
+                if (missed_status == enemyCells[z][coordinate.y]){
                     miss = true;
                     break;
                 }
-                if ((int)cell.x == z){
+                if ((int)coordinate.x == z){
                     eq = true;
                 }
             }
             if (eq && !miss){
-                ++chance[cell.x][cell.y];
+                ++chance[coordinate.x][coordinate.y];
             }
         }
         
@@ -90,25 +90,25 @@ size_t AssistedGamer::calculateDieChance(ShotCoordinates cell){
             bool eq = false;
             bool miss = false;
             for (int m = k; m <= k + size - 1; ++m){
-                if (missed_status == enemyCells[cell.x][m]){
+                if (missed_status == enemyCells[coordinate.x][m]){
                     miss = true;
                     break;
                 }
-                if ((int)cell.y == m){
+                if ((int)coordinate.y == m){
                     eq = true;
                 }
             }
             if (eq && !miss){
-                ++chance[cell.x][cell.y];
+                ++chance[coordinate.x][coordinate.y];
             }
         }
     }
     
-    if (alivingShips[1] > 0){ //можно поставить однопалубник, если еще остались
-        ++chance[cell.x][cell.y];
+    if (alivingShips[1] > 0){ 
+        ++chance[coordinate.x][coordinate.y];
     }
 
-    return chance[cell.x][cell.y];
+    return chance[coordinate.x][coordinate.y];
 }
 
 ShotCoordinates AssistedGamer::denyShip(){
@@ -123,10 +123,10 @@ ShotCoordinates AssistedGamer::denyShip(){
     
     int hitSize = (int) hitShip.size();
     if (1 == hitSize){
-        ShotCoordinates cell = hitShip[0];
+        ShotCoordinates coordinate = hitShip[0];
 
         int maxSize = 0;
-        for (size_t i = 1; i <= alivingShips.size() - 1; ++i){ //максимальный размер
+        for (size_t i = 1; i <= alivingShips.size() - 1; ++i){ 
             if (alivingShips[i] > 0){
                 maxSize = (int)i;
             }
@@ -137,10 +137,10 @@ ShotCoordinates AssistedGamer::denyShip(){
         int top;
         int bottom;
         
-        (int)cell.x - maxSize + 1 > 0 ? left = (int)cell.x - maxSize + 1 : left = 0;
-        ((int)cell.x + maxSize - 1) < (field_dimention - 1) ? right = (int)cell.x + maxSize - 1 : right = field_dimention - 1;
-        (int)cell.y - maxSize + 1 > 0 ? top = (int)cell.y - maxSize + 1 : top = 0;
-        ((int)cell.y + maxSize - 1) < (field_dimention - 1) ? bottom = (int)cell.y + maxSize - 1 : bottom = field_dimention - 1;
+        (int)coordinate.x - maxSize + 1 > 0 ? left = (int)coordinate.x - maxSize + 1 : left = 0;
+        ((int)coordinate.x + maxSize - 1) < (field_dimention - 1) ? right = (int)coordinate.x + maxSize - 1 : right = field_dimention - 1;
+        (int)coordinate.y - maxSize + 1 > 0 ? top = (int)coordinate.y - maxSize + 1 : top = 0;
+        ((int)coordinate.y + maxSize - 1) < (field_dimention - 1) ? bottom = (int)coordinate.y + maxSize - 1 : bottom = field_dimention - 1;
 
         for (int size = 2; size <= maxSize; ++size){
             if (alivingShips[size] == 0){
@@ -149,18 +149,19 @@ ShotCoordinates AssistedGamer::denyShip(){
             for (int i = left; i < right - size + 2; ++i){
                 bool eq = false;
                 bool miss = false;
-                for (int z = i; z <= i + size - 1; ++z){
-                    if (missed_status == enemyCells[z][cell.y]){
+                for (int j = i; j <= i + size - 1; ++j){
+                    if (missed_status == enemyCells[j][coordinate.y]){
                         miss = true;
                         break;
                     }
-                    if ((int)(cell.x) == z){
+                    if ((int)(coordinate.x) == j)
                         eq = true;
-                    }
+                    
                 }
                 if (eq && !miss){
-                    for (int z = i; z <= i + size - 1; ++z){
-                        ++chance[z][cell.y];
+                    for (int j = i; j <= i + size - 1; ++j){
+                        if (ghost_status == enemyCells[j][coordinate.y])
+                            ++chance[j][coordinate.y];
                     }
                 }
             }
@@ -169,30 +170,31 @@ ShotCoordinates AssistedGamer::denyShip(){
                 bool eq = false;
                 bool miss = false;
                 for (int m = k; m <= k + size - 1; ++m){
-                    if (missed_status == enemyCells[cell.x][m]){
+                    if (missed_status == enemyCells[coordinate.x][m]){
                         miss = true;
                         break;
                     }
-                    if ((int)(cell.y) == m){
+                    if ((int)(coordinate.y) == m){
                         eq = true;
                     }
                 }
                 if (eq && !miss){
                     for (int m = k; m <= k + size - 1; ++m){
-                        ++chance[cell.x][m];
+                        if (ghost_status == enemyCells[coordinate.y][m])
+                            ++chance[coordinate.x][m];
                     }
                 }
             }
         }
         
-        chance[cell.x][cell.y] = 0;
-        
+        chance[coordinate.x][coordinate.y] = 0;
+
         size_t maximumDieShipChance = 0;
         ShotCoordinates maximumDieShipChanceCoordinates;
 
         for (int x = 0; x < field_dimention; ++x){
             for (int y = 0; y < field_dimention; ++y){
-                if (chance[x][y] > maximumDieShipChance){
+                if ((chance[x][y] > maximumDieShipChance)){
                     maximumDieShipChance = chance[x][y];
                     maximumDieShipChanceCoordinates = ShotCoordinates(x, y);
                 }
@@ -274,6 +276,7 @@ ShotCoordinates AssistedGamer::getBestShot(){
     size_t field_dimention = enemy_field->getDimention();
     auto & enemyCells = enemy_field->getCellsStatus();
     
+
     if (died_status == enemyCells[previousShot.x][previousShot.y]){
         state = stop;
         hitShip.push_back(previousShot);
@@ -286,7 +289,7 @@ ShotCoordinates AssistedGamer::getBestShot(){
         isKilledShipInPreviousShot = false;
     }
     
-    if (in_search == state){
+    if (state == in_search){
 
         for (auto & iter : chance){
             for (auto & iteration_iter : iter){
@@ -309,26 +312,121 @@ ShotCoordinates AssistedGamer::getBestShot(){
             }
         }
 
-        previousShot = maximumDieShipChanceCoordinates;
         return maximumDieShipChanceCoordinates;
 
     } else { 
         
         ShotCoordinates maximumDieShipChanceCoordinates = denyShip();
-        previousShot = maximumDieShipChanceCoordinates;
-
-        return maximumDieShipChanceCoordinates; // вернет координату наиболее вероятного удара
+        return maximumDieShipChanceCoordinates; 
     }
 }
 
 Coordinates AssistedGamer::getShipCoordinates(size_t size){
+    Coordinates answer;
+
+    if (ship_placement == undefined)
+    {
+        std::string ship_placement_style_s;
+        view->showMessage("Choose ship placement style (manual/optimal)");
+        std::cin >> ship_placement_style_s;
+        if (ship_placement_style_s == "manual"){
+            ship_placement = manual;
+        } else if (ship_placement_style_s == "optimal"){
+            ship_placement = optimal;
+        } else {
+            throw std::logic_error("Undefined sjip placement style, Please try again");
+        }
+    }
+    switch (ship_placement){
+        case manual: {
+            answer = getShipCoordinatesFromConsole(size);
+            break;
+        }
+        case optimal: {
+            answer = getShipCoordinatesOptimal(size);
+            break;
+        }
+        default: {
+            throw std::logic_error("Undefined sjip placement style, Please try again");
+        }
+    }
+    return answer;
+}
+
+Coordinates AssistedGamer::getShipCoordinatesFromConsole(size_t size){
     if (!isInitializedCorrect){
         throw std::logic_error("Gamer uninitialized");
     }
-    if (size == 4){ // ввод корректен например a4 v
+    if (size == 4){ 
         view->showMyField(field);
     }
     return view->getCoordinatesForShip(size);
+}
+
+Coordinates AssistedGamer::getShipCoordinatesOptimal(size_t size){
+    if (!isInitializedCorrect){
+        throw std::logic_error("Gamer uninitialized");
+    }
+    
+    std::srand((int)std::time(0) * std::rand());
+    size_t field_dimention = field->getDimention();
+    Coordinates coordinates;
+    
+    if (size == 1){
+        do{
+            coordinates.x = std::rand() % (field_dimention - 4) + 2;
+            coordinates.y = std::rand() % (field_dimention - 4) + 2;
+            coordinates.orientation = HORIZONTAL;
+        } while (0 != field->getNeighboringShips(coordinates.x, coordinates.y).size());
+        return coordinates;
+    }
+
+    size_t side = 0;
+    bool isDone = false;
+    
+    do {
+        do{
+            side = std::rand() % 4;
+        }while (side_ships_count[side] >= 2);
+
+        switch (side) {
+            case 0: //лево
+                coordinates.orientation = VERTICAL;
+                coordinates.x = 0;
+                coordinates.y = std::rand() % (field_dimention - size);
+                break;
+            case 1: //верх
+                coordinates.orientation = HORIZONTAL;
+                coordinates.y = 0;
+                coordinates.x = std::rand() % (field_dimention - size);
+                break;
+            case 2: //право
+                coordinates.orientation = VERTICAL;
+                coordinates.x = field_dimention - 1;
+                coordinates.y = std::rand() % (field_dimention - size);
+                break;
+            case 3: //низ
+                coordinates.orientation = HORIZONTAL;
+                coordinates.y = field_dimention - 1;
+                coordinates.x = std::rand() % (field_dimention - size);
+                break;
+        }
+        for (size_t i = 1; i<=size; ++i){
+            auto nearShips =
+                field->getNeighboringShips(coordinates.x + ((size-1)*!(coordinates.orientation)), coordinates.y + ((size-1)*coordinates.orientation));
+
+            if (nearShips.size() == 0){
+                isDone = true;
+            } else {
+                isDone = false;
+                break;
+            }
+        }
+    } while (!isDone);
+
+    ++side_ships_count[side];
+    previous_side = side;
+    return coordinates;
 }
 
 ShotCoordinates AssistedGamer::make_shot(){
