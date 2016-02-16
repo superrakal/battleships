@@ -123,6 +123,7 @@ ShotCoordinates AssistedGamer::denyShip(){
     
     int hitSize = (int) hitShip.size();
     if (1 == hitSize){
+
         ShotCoordinates coordinate = hitShip[0];
 
         int maxSize = 0;
@@ -151,6 +152,7 @@ ShotCoordinates AssistedGamer::denyShip(){
                 bool miss = false;
                 for (int j = i; j <= i + size - 1; ++j){
                     if (missed_status == enemyCells[j][coordinate.y]){
+                        chance[j][coordinate.x] = 0;
                         miss = true;
                         break;
                     }
@@ -160,8 +162,7 @@ ShotCoordinates AssistedGamer::denyShip(){
                 }
                 if (eq && !miss){
                     for (int j = i; j <= i + size - 1; ++j){
-                        if (ghost_status == enemyCells[j][coordinate.y])
-                            ++chance[j][coordinate.y];
+                        ++chance[j][coordinate.y];
                     }
                 }
             }
@@ -171,6 +172,7 @@ ShotCoordinates AssistedGamer::denyShip(){
                 bool miss = false;
                 for (int m = k; m <= k + size - 1; ++m){
                     if (missed_status == enemyCells[coordinate.x][m]){
+                        chance[coordinate.x][m] = 0;
                         miss = true;
                         break;
                     }
@@ -180,26 +182,46 @@ ShotCoordinates AssistedGamer::denyShip(){
                 }
                 if (eq && !miss){
                     for (int m = k; m <= k + size - 1; ++m){
-                        if (ghost_status == enemyCells[coordinate.y][m])
-                            ++chance[coordinate.x][m];
+                        ++chance[coordinate.x][m];
                     }
                 }
             }
         }
         
-        chance[coordinate.x][coordinate.y] = 0;
-
         size_t maximumDieShipChance = 0;
         ShotCoordinates maximumDieShipChanceCoordinates;
+        chance[coordinate.x][coordinate.y] = 0;
+
+        // for (int x = 0; x < field_dimention; ++x){
+        //     for (int y = 0; y < field_dimention; ++y){
+        //         std::cout << enemyCells[y][x] << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
+        // std::cout << std::endl;
+        // std::cout << std::endl;
+
+        // for (int x = 0; x < field_dimention; ++x){
+        //     for (int y = 0; y < field_dimention; ++y){
+        //         std::cout << chance[y][x] << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
 
         for (int x = 0; x < field_dimention; ++x){
             for (int y = 0; y < field_dimention; ++y){
-                if ((chance[x][y] > maximumDieShipChance)){
+                if (chance[x][y] > maximumDieShipChance){
                     maximumDieShipChance = chance[x][y];
                     maximumDieShipChanceCoordinates = ShotCoordinates(x, y);
                 }
             }
         }
+
+
+        // std::cout << "CHANCE: " << chance[maximumDieShipChanceCoordinates.x][maximumDieShipChanceCoordinates.y] << std::endl;
+        // std::cout << "X: " << maximumDieShipChanceCoordinates.x << std::endl;                
+        // std::cout << "Y: " << maximumDieShipChanceCoordinates.y << std::endl;
+
         return maximumDieShipChanceCoordinates;
     }
     
@@ -442,7 +464,7 @@ ShotCoordinates AssistedGamer::make_shot(){
 std::string AssistedGamer::bestShootStr(ShotCoordinates coordinates) {
     std::string answer;
     answer += 'A' + coordinates.x;
-    answer += coordinates.y + '0';
+    answer += coordinates.y+1 + '0';
     return answer;
 }
 
