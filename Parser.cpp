@@ -24,7 +24,7 @@ namespace Parser{
     Config parse(int argc, char** argv){
         option::Descriptor usage[] =
         {
-            {UNDEFINED, 0, "", "",  option::Arg::None, "Welcome to the Battleship!\nThere are 3 gamer types avaliable: OptimalGamer, ConsoleGamer, RandomGamer.\n\n"
+            {UNDEFINED, 0, "", "",  option::Arg::None, "Welcome to the Battleship!\nThere are 4 gamer types avaliable: OptimalGamer, ConsoleGamer, AssistedGamer, RandomGamer.\n\n"
                 "Options:" },
             {HELP, 0,"h", "help",   option::Arg::None, "  --help, -h  \tPrint help information and exit application." },
             {FIRST, 0,"f","first",  Parser::checkArg, "  --first, -f  \tFirst gamer type." },

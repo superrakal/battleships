@@ -1,3 +1,4 @@
+#pragma once
 #include "BaseGamer.hpp"
 
 class ConsoleGamer : public Gamer{

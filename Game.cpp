@@ -11,7 +11,6 @@ Gamer* Game::getCurrentGamer() const{
 }
 
 Gamer* Game::play(){
-
     currentGamer = &first_gamer; // передаем управление 
     setShips(first_gamer); // устанавливаем корабли
 

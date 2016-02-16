@@ -98,7 +98,7 @@ void GameController::startPlaying(){
             view->showMessage("Welcome to the Battleship!");
         }
 
-        Gamer *winner = game->play();
+        Gamer* winner = game->play();
         
         (winner == first_gamer) ? ++first_gamer_wins_count: ++second_gamer_wins_count;
 

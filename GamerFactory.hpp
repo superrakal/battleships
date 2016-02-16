@@ -23,6 +23,9 @@ public:
         if ("OptimalGamer" == substance_string){
             return GamerObject(new OptimalGamer(), computer);
         }
+        if ("AssistedGamer" == substance_string){
+            return GamerObject(new AssistedGamer(), human);
+        }
         throw std::invalid_argument("invalid Gamer");
     };
 };
