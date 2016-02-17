@@ -98,7 +98,7 @@ Coordinates OptimalGamer::getShipCoordinates(size_t size){
         }
         for (size_t i = 1; i<=size; ++i){
             auto nearShips =
-                field->getNeighboringShips(coordinates.x + ((size-1)*!(coordinates.orientation)), coordinates.y + ((size-1)*coordinates.orientation));
+                field->getNeighboringShips(coordinates.x + ((i-1)*!(coordinates.orientation)), coordinates.y + ((i-1)*coordinates.orientation));
 
             if (nearShips.size() == 0){
                 isDone = true;
