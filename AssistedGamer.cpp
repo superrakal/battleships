@@ -207,12 +207,14 @@ ShotCoordinates AssistedGamer::denyShip(){
             }
             std::cout << std::endl;
         }
+        std::cout << std::endl;
+        
 
         for (int x = 0; x < field_dimention; ++x){
             for (int y = 0; y < field_dimention; ++y){
                 if (chance[x][y] > maximumDieShipChance){
                     maximumDieShipChance = chance[x][y];
-                    std::cout << "CHANCE: " << chance[x][y];
+                    // std::cout << "CHANCE: " << chance[x][y];
                     maximumDieShipChanceCoordinates = ShotCoordinates(x, y);
                 }
             }
@@ -401,6 +403,7 @@ Coordinates AssistedGamer::getShipCoordinatesOptimal(size_t size){
             coordinates.y = std::rand() % (field_dimention - 4) + 2;
             coordinates.orientation = HORIZONTAL;
         } while (0 != field->getNeighboringShips(coordinates.x, coordinates.y).size());
+    
         return coordinates;
     }
 
@@ -434,9 +437,9 @@ Coordinates AssistedGamer::getShipCoordinatesOptimal(size_t size){
                 coordinates.x = std::rand() % (field_dimention - size);
                 break;
         }
-        for (size_t i = 1; i<=size; ++i){
+        for (size_t i = 1; i <= size; ++i){
             auto nearShips =
-                field->getNeighboringShips(coordinates.x + ((size-1)*!(coordinates.orientation)), coordinates.y + ((size-1)*coordinates.orientation));
+                field->getNeighboringShips(coordinates.x + ((i-1)*!(coordinates.orientation)), coordinates.y + ((i-1)*coordinates.orientation));
 
             if (nearShips.size() == 0){
                 isDone = true;

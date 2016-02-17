@@ -1,5 +1,5 @@
 #include "Field.hpp"
-
+#include <iostream>
 
 Field::Field(const size_t &dimnetion){
     field_dimention = dimnetion;
@@ -90,6 +90,7 @@ std::vector<ShotCoordinates> Field::getArea(size_t x, size_t y) const{
 std::vector<Ship*> Field::getNeighboringShips(size_t x, size_t y) const{
     std::vector<Ship*> neighboring_ships;
     auto area = getArea(x, y);
+
     for (auto & iter : area){
         if (nullptr != cells[iter.x][iter.y]){
             neighboring_ships.push_back(cells[iter.x][iter.y]);
