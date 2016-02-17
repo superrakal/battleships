@@ -67,6 +67,8 @@ void ConsoleView::showGameStatistic(int first_gamer_wins_count, int second_gamer
     std::cout << "Statistic:" << std::endl;
     std::cout << first_gamer_wins_count << " : "<< second_gamer_wins_count << std::endl;
     std::cout << "Playing time (~sec):" << (time_finish - time_start) / CLOCKS_PER_SEC << std::endl;
+    std::cout << "Playing time (~iterations):" << (time_finish - time_start) << std::endl;
+
 }
 
 void ConsoleView::showMessage(std::string message) const{
