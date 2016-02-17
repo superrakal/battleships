@@ -1,5 +1,6 @@
 #include "OptimalGamer.hpp"
 #include <iostream>
+#include <cmath>
 
 // Алгоритм таков: расставляем большие корабли по бокам, а единички в центре и таким образом, чтобы они покрыли максимальную площадь.
 // Ну а стреляем очевидно: если у нас нет четырехпалубника, то мы не ищем четвертую клетку и так далее.
@@ -96,7 +97,7 @@ Coordinates OptimalGamer::getShipCoordinates(size_t size){
                 coordinates.x = std::rand() % (field_dimention - size);
                 break;
         }
-        for (size_t i = 1; i<=size; ++i){
+        for (size_t i = 1; i <=size; ++i){
             auto nearShips =
                 field->getNeighboringShips(coordinates.x + ((i-1)*!(coordinates.orientation)), coordinates.y + ((i-1)*coordinates.orientation));
 
@@ -115,40 +116,40 @@ Coordinates OptimalGamer::getShipCoordinates(size_t size){
 }
 
 size_t OptimalGamer::calculateDieChance(ShotCoordinates cell){
-    int field_dimention = (int)enemy_field->getDimention();
+    size_t field_dimention = (size_t)enemy_field->getDimention();
     auto& enemyCells = enemy_field->getCellsStatus();
 
-    int maxSize = 0;
+    size_t maxSize = 0;
     for (size_t i = 1; i <= alivingShips.size() - 1; ++i){ //максимальный размер корабля на поле
         if (alivingShips[i] > 0){
-            maxSize = (int)i;
+            maxSize = (size_t)i;
         }
     }
     
-    int left;
-    int right;
-    int top;
-    int bottom;
+    size_t left;
+    size_t right;
+    size_t top;
+    size_t bottom;
     
-    (int)cell.x - maxSize + 1 > 0 ? left = (int)cell.x - maxSize + 1 : left = 0;
-    ((int)cell.x + maxSize - 1) < (field_dimention - 1) ? right = (int)cell.x + maxSize - 1 : right = field_dimention - 1;
-    (int)cell.y - maxSize + 1 > 0 ? top = (int)cell.y - maxSize + 1 : top = 0;
-    ((int)cell.y + maxSize - 1) < (field_dimention - 1) ? bottom = (int)cell.y + maxSize - 1 : bottom = field_dimention - 1;
+    (size_t)cell.x - maxSize + 1 > 0 ? left = (size_t)cell.x - maxSize + 1 : left = 0;
+    ((size_t)cell.x + maxSize - 1) < (field_dimention - 1) ? right = (size_t)cell.x + maxSize - 1 : right = field_dimention - 1;
+    (size_t)cell.y - maxSize + 1 > 0 ? top = (size_t)cell.y - maxSize + 1 : top = 0;
+    ((size_t)cell.y + maxSize - 1) < (field_dimention - 1) ? bottom = (size_t)cell.y + maxSize - 1 : bottom = field_dimention - 1;
     
-    for (int size = 2; size <= maxSize; ++size){
+    for (size_t size = 2; size <= maxSize; ++size){
         if (0 == alivingShips[size]){
             continue;
         }
         
-        for (int i = left; i<=right - size + 1; ++i){
+        for (size_t i = left; i<=right - size + 1; ++i){
             bool eq = false;
             bool miss = false;
-            for (int z = i; z <= i + size - 1; ++z){
+            for (size_t z = i; z <= i + size - 1; ++z){
                 if (missed_status == enemyCells[z][cell.y]){
                     miss = true;
                     break;
                 }
-                if ((int)cell.x == z){
+                if ((size_t)cell.x == z){
                     eq = true;
                 }
             }
@@ -157,15 +158,15 @@ size_t OptimalGamer::calculateDieChance(ShotCoordinates cell){
             }
         }
         
-        for (int k = top; k<=bottom - size + 1; ++k){
+        for (size_t k = top; k<=bottom - size + 1; ++k){
             bool eq = false;
             bool miss = false;
-            for (int m = k; m <= k + size - 1; ++m){
+            for (size_t m = k; m <= k + size - 1; ++m){
                 if (missed_status == enemyCells[cell.x][m]){
                     miss = true;
                     break;
                 }
-                if ((int)cell.y == m){
+                if ((size_t)cell.y == m){
                     eq = true;
                 }
             }
@@ -263,7 +264,7 @@ ShotCoordinates OptimalGamer::denyShip(){
 
         for (int x = left; x <= right; ++x){
             for (int y = top; y <= bottom; ++y){
-                if (chance[x][y] > maximumDieShipChance){
+                if (chance[x][y] > maximumDieShipChance && (std::abs(x - (int)cell.x + y - (int)cell.y) == 1)){
                     maximumDieShipChance = chance[x][y];
                     maximumDieShipChanceCoordinates = ShotCoordinates(x, y);
                 }
