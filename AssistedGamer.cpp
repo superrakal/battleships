@@ -192,26 +192,27 @@ ShotCoordinates AssistedGamer::denyShip(){
         ShotCoordinates maximumDieShipChanceCoordinates;
         chance[coordinate.x][coordinate.y] = 0;
 
-        // for (int x = 0; x < field_dimention; ++x){
-        //     for (int y = 0; y < field_dimention; ++y){
-        //         std::cout << enemyCells[y][x] << " ";
-        //     }
-        //     std::cout << std::endl;
-        // }
-        // std::cout << std::endl;
-        // std::cout << std::endl;
+        for (int x = 0; x < field_dimention; ++x){
+            for (int y = 0; y < field_dimention; ++y){
+                std::cout << enemyCells[y][x] << " ";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+        std::cout << std::endl;
 
-        // for (int x = 0; x < field_dimention; ++x){
-        //     for (int y = 0; y < field_dimention; ++y){
-        //         std::cout << chance[y][x] << " ";
-        //     }
-        //     std::cout << std::endl;
-        // }
+        for (int x = 0; x < field_dimention; ++x){
+            for (int y = 0; y < field_dimention; ++y){
+                std::cout << chance[y][x] << " ";
+            }
+            std::cout << std::endl;
+        }
 
         for (int x = 0; x < field_dimention; ++x){
             for (int y = 0; y < field_dimention; ++y){
                 if (chance[x][y] > maximumDieShipChance){
                     maximumDieShipChance = chance[x][y];
+                    std::cout << "CHANCE: " << chance[x][y];
                     maximumDieShipChanceCoordinates = ShotCoordinates(x, y);
                 }
             }
@@ -464,7 +465,10 @@ ShotCoordinates AssistedGamer::make_shot(){
 std::string AssistedGamer::bestShootStr(ShotCoordinates coordinates) {
     std::string answer;
     answer += 'A' + coordinates.x;
-    answer += coordinates.y+1 + '0';
+    if (coordinates.y < 9)
+        answer += coordinates.y+1 + '0';
+    else 
+        answer += "10";
     return answer;
 }
 
